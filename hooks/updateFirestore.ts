@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { collection, doc, query, orderBy, deleteDoc, getDocs, getFirestore, onSnapshot, setDoc } from 'firebase/firestore'
 
-export async function addDoc( colname, addDoc ): Promise<void> {
+export const addDoc = async ( colname, addDoc ): Promise<void> => {
   const db = getFirestore()
   const docRef = doc(collection(db, colname))
   await setDoc(docRef,
@@ -10,7 +10,7 @@ export async function addDoc( colname, addDoc ): Promise<void> {
   )
 }
 
-export async function updateDoc( colname, updateDoc ): Promise<void> {
+export const updateDoc = async ( colname, updateDoc ): Promise<void> => {
   const db = getFirestore()
   const docRef = doc(db, colname)
   await setDoc(docRef,
@@ -26,13 +26,13 @@ export async function updateDoc( colname, updateDoc ): Promise<void> {
   )
 }
 
-export async function delDoc( colname, id ): Promise<void> {
+export const delDoc = async ( colname, id ): Promise<void> => {
   const db = getFirestore()
   const userDocumentRef = doc(db, colname, id)
   await deleteDoc(userDocumentRef);
 };
 
-export async function getDoc( colname ) {
+export const getDoc = async ( colname ) => {
   let output = []
   const db = getFirestore()
   await getDocs(collection(db, colname)).then((querySnapshot) => {
@@ -41,7 +41,7 @@ export async function getDoc( colname ) {
   return output
 }
 
-export function getDocOnSnapshot( colname ) {
+export const getDocOnSnapshot =  ( colname ) => {
   const [output, setOutput] = useState([])
   useEffect(() => {
     const db = getFirestore()

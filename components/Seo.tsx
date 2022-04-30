@@ -1,6 +1,6 @@
 import Head from 'next/head'
 
-export default function Seo({title, description}) {
+const Seo = ({title, description}) => {
   
     return (
         <Head>
@@ -10,3 +10,5 @@ export default function Seo({title, description}) {
     )
 
 }
+
+export default Seo

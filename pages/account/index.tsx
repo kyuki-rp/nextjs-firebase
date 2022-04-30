@@ -1,14 +1,15 @@
 import React from "react";
 import { useState, useEffect } from 'react';
-import { handleDeleteAccount, handleUpdateEmail, handleUpdatePassword, handleUpdateProfile } from '../../components/UserSignin'
+import { handleDeleteAccount, handleUpdateEmail, handleUpdatePassword, handleUpdateProfile } from '../../hooks/updateAuthentication'
 import Layout from '../../components/Layout'
 import { getAuth, getStorage } from '../../hooks/getAuth'
+import { useRouter } from "next/router"
+import AnonymousSnackbar from "../../components/AnonymousSnackbar"
 
+const Whiteboard = () => {
 
-export default function Whiteboard() {
-
-  const auth = getAuth()
-  const storage = getStorage()
+  const auth = getAuth();
+  const router = useRouter();
 
   const [radiobutton, setRadiobutton] = useState("")
   const [editFlg, setEditFlg] = useState(false);
@@ -62,7 +63,7 @@ export default function Whiteboard() {
     } else if (auth.currentUser.email!="sample@example.com" && radiobutton=="パスワードの変更") {
         handleUpdatePassword(auth, input.password, input.newPassword, input.checkNewPassword)
     } else if (auth.currentUser.email!="sample@example.com" && radiobutton=="アカウントの削除") {
-        handleDeleteAccount(auth, input.password)
+        handleDeleteAccount(auth, router, input.password)
     }
     setInput({password:"", newEmail:"", newPassword:"", checkNewPassword:""})
   }
@@ -76,6 +77,7 @@ export default function Whiteboard() {
   return (
     <>
       <Layout>
+        <AnonymousSnackbar />
         <h3 style={{paddingTop:"1em", paddingBottom:"0.5em"}}>Myアカウントページ</h3>
 
         <div>
@@ -118,3 +120,5 @@ export default function Whiteboard() {
     </>
   );
 }
+
+export default  Whiteboard

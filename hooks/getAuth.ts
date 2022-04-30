@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { onAuthStateChanged, signInAnonymously, signInWithEmailAndPassword } from "firebase/auth"
 import { fbauth, fbstorage } from '../lib/firebase';
+import { useRouter } from "next/router"
 
-export function getAuth() {
+export const getAuth = () => {
   const auth = fbauth
+  const router = useRouter();
 
   const [authorization, setAuthorization] = useState(auth);
 
@@ -13,7 +15,6 @@ export function getAuth() {
       if (!user) {
         // signInAnonymously(auth)
         signInWithEmailAndPassword(auth, 'sample@example.com', 'password')
-
       }
       setFlg(1)
       setAuthorization(auth)
@@ -22,7 +23,8 @@ export function getAuth() {
   return authorization
 }
 
-export function getStorage() {
+export const getStorage = () => {
   return fbstorage
 }
+
 

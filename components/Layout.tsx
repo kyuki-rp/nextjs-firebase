@@ -4,11 +4,12 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 
-export default function Layout({ children }) {
+const Layout = ({ children }) => {
     const title = 'ポートフォリオ'
     const description = ''
 
     const router = useRouter();
+    console.log(router)
     let content
 
     if (router.route=="/signin" || router.route=="/signup") {
@@ -45,4 +46,6 @@ export default function Layout({ children }) {
      </div>
      </div>
     )
-  }
+}
+
+export default Layout

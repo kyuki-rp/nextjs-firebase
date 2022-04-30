@@ -2,21 +2,21 @@ import React from 'react';
 import GridLayout from 'react-grid-layout';
 import { useState, useEffect } from 'react';
 import { serverTimestamp } from "firebase/firestore";
-import { addDoc, updateDoc, getDoc, getDocOnSnapshot, delDoc } from '../../hooks/crudDoc'
+import { addDoc, updateDoc, getDoc, getDocOnSnapshot, delDoc } from '../../hooks/updateFirestore'
 import { getAuth } from '../../hooks/getAuth'
-import { handleSignout } from '../../components/UserSignin'
+import { handleSignout } from '../../hooks/updateAuthentication'
 import Card from './Card'
 import Link from 'next/link'
+import { useRouter } from "next/router"
+import AnonymousSnackbar from "../../components/AnonymousSnackbar"
 
 
-export default function Sticky() {
+const Sticky = () => {
 
- 
-  const auth = getAuth()
-  console.log(auth)
+  const auth = getAuth();
+  const router = useRouter();
 
   const [layouts, setLayouts] = useState([]);
-
   
   const elements = getDocOnSnapshot( `/users/${auth?.currentUser?.uid}/tasks` )
 
@@ -80,6 +80,7 @@ export default function Sticky() {
 
   return (
     <>
+      <AnonymousSnackbar />
       <GridLayout className="layout" layout={layouts} cols={6} rowHeight={200} width={1200} onDragStop={onDragStop} >
         <div key="welcome" style={{color:"#EEEEEE", backgroundColor:"#444444", textAlign:"center" }}>
           <div style = {{ whiteSpace: 'pre-line', gridAutoColumns: 'auto', 'fontWeight':'bold', fontSize: "70%", paddingTop:'20px'}}>
@@ -91,7 +92,7 @@ export default function Sticky() {
           <div key="sign" style={{ color:"#EEEEEE", backgroundColor:"#A4C6FF", textAlign:"center", fontWeight: 'bold', cursor:"pointer", paddingTop:'15px'}}>
           { (auth?.currentUser?.isAnonymous==false && auth?.currentUser?.email!="sample@example.com") &&
             <Link href="/signin">  
-                <a onClick={() => handleSignout(auth)}>Logout</a>
+                <a onClick={() => handleSignout(auth, router)}>Logout</a>
             </Link>
           }
           { (auth?.currentUser?.isAnonymous!=false || auth?.currentUser?.email=="sample@example.com") &&
@@ -108,6 +109,9 @@ export default function Sticky() {
           <div key={element.id} style={{backgroundColor:"#FFFFBB", textAlign:"center"}}><Card element={element} /></div>
         )}
       </GridLayout>
+      
     </>
   );
 }
+
+export default Sticky

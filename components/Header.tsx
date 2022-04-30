@@ -1,10 +1,12 @@
 import { getAuth } from '../hooks/getAuth'
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import { handleSignout } from '../components/UserSignin'
+import { handleSignout } from '../hooks/updateAuthentication'
+import { useRouter } from "next/router"
 
-export default function Header() {
-    const auth = getAuth()
+const Header = () => {
+    const auth = getAuth();
+    const router = useRouter();
 
     return (
       <div>
@@ -16,6 +18,9 @@ export default function Header() {
                 <Navbar.Toggle className="mx-3" aria-controls="responsive-navbar-nav" />
                   <Navbar.Collapse className="mx-5" id="responsive-navbar-nav">
                     <Nav className='ms-auto'>
+                      <Nav.Link href="/" >
+                        Home
+                      </Nav.Link>
                       { (auth?.currentUser?.isAnonymous!=false || auth?.currentUser?.email=="sample@example.com") &&
                         <Nav.Link href="/signin" >
                           Login
@@ -23,7 +28,7 @@ export default function Header() {
                       }
                       { (auth?.currentUser?.isAnonymous==false && auth?.currentUser?.email!="sample@example.com") &&
                         <Nav.Link href="/" >
-                          <a onClick={() => handleSignout(auth)}>Logout</a>
+                          <a onClick={() => handleSignout(auth, router)}>Logout</a>
                         </Nav.Link>
                       }
                   </Nav>
@@ -33,3 +38,5 @@ export default function Header() {
       </div>
     )
 }
+
+export default Header

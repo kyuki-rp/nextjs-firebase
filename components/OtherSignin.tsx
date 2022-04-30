@@ -3,19 +3,19 @@ import { GoogleAuthProvider, FacebookAuthProvider, TwitterAuthProvider, GithubAu
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import { getAuth } from '../hooks/getAuth'
 
-const uiConfig = {
-  signInSuccessUrl: "/",
-  signInOptions: [
-      GoogleAuthProvider.PROVIDER_ID,
-      FacebookAuthProvider.PROVIDER_ID,
-      TwitterAuthProvider.PROVIDER_ID,
-      GithubAuthProvider.PROVIDER_ID
-  ],
-}
-
 const OtherSignin = () => {
 
     const auth = getAuth()
+
+    const uiConfig = {
+      signInSuccessUrl: "/",
+      signInOptions: [
+          GoogleAuthProvider.PROVIDER_ID,
+          FacebookAuthProvider.PROVIDER_ID,
+          TwitterAuthProvider.PROVIDER_ID,
+          GithubAuthProvider.PROVIDER_ID
+      ],
+    }
 
     const [widget, setWidget] = useState(null);
     useEffect(() => {
@@ -28,7 +28,6 @@ const OtherSignin = () => {
         {widget}
       </>
     )
-  }
-
+}
 
 export default OtherSignin

@@ -1,7 +1,7 @@
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 
-export default function Header() {
+const Footer = () => {
     return (
       <div style={{fontWeight:"bold", marginTop: "auto", opacity:"0.8"}}>
         <Navbar bg="dark" variant="dark" style={{height:"80px"}}>
@@ -12,3 +12,5 @@ export default function Header() {
       </div>
     )
 }
+
+export default Footer

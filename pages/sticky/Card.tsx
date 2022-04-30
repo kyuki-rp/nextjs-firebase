@@ -1,23 +1,23 @@
 import React, { useRef } from "react";
 import { useState, useEffect } from 'react';
-import { updateDoc } from '../../hooks/crudDoc'
+import { updateDoc } from '../../hooks/updateFirestore'
 import { serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytesResumable, getDownloadURL} from "firebase/storage";
 import { getAuth, getStorage } from '../../hooks/getAuth'
-
 
 export default function Card( props ) {
 
   const { element } = props
 
-  const [edit, setEdit] = useState(element?.content);
-  const [editFlg, setEditFlg] = useState(false);
-  const [fileUrl, setFileUrl] = useState(undefined);
-
   const auth = getAuth()
   const storage = getStorage()
 
+  const [edit, setEdit] = useState(element?.content);
+  const [editFlg, setEditFlg] = useState(false);
+  const [fileUrl, setFileUrl] = useState(undefined);
+  
   useEffect(() => {
+
     if (element?.type=='image'||element?.type=='video') {
       const fileRef = ref(storage, `/users/${auth.currentUser.uid}/${element?.content}`)
       getDownloadURL(fileRef).then((downloadURL) => {
@@ -42,6 +42,7 @@ export default function Card( props ) {
     const fileType = file.type.split('/')[0]
     const edit = {content:file.name, type:fileType, x:element.x, y:element.y, createAt:serverTimestamp()}
     updateDoc( `/users/${auth.currentUser.uid}/tasks/${element.id}`, edit)
+    
   }
 
   const fileUpload = (event) => {
@@ -61,7 +62,6 @@ export default function Card( props ) {
         },
         (error) => {
           console.log("Error");
-          alert( '容量が大きすぎます。' );
         },
         () => {
           updateFile(file)
@@ -87,7 +87,7 @@ export default function Card( props ) {
       { (element?.type=='text' && editFlg) &&
         <>
           <div style={{display:'flex', justifyContent:'flex-end'}}>
-            <button onClick={() => updateEdit(element, edit)} style={{border:'none', background:'transparent'}}><img src='/images/check-mark.png' width='20px' style={{opacity: "0.5"}}/></button>
+            <button onClick={() => updateEdit(element, edit)} style={{border:'none', background:'transparent'}}><img src='/images/update.png' width='20px' /></button>
           </div>
           <textarea value={edit} rows={edit.split('\n').length} onChange={event => setEdit(event.target.value)} style={{maxHeight:'160px', resize:'none'}} />
         </>

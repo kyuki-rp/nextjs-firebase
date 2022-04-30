@@ -1,7 +1,7 @@
 import * as React from "react"
 import Layout from "../components/Layout"
 
-const Contact = ({ data, location }) => {
+const Contact = () => {
 
   return (
     <Layout>

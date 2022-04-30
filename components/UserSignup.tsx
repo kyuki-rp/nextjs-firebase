@@ -1,16 +1,14 @@
 import React, { useState } from "react"
-import { useRouter } from "next/router"
 import Link from "next/link"
-import { Alert, Snackbar } from "@mui/material"
-import { createUserWithEmailAndPassword } from "firebase/auth"
 import { getAuth } from '../hooks/getAuth'
-import { handleUpdateProfile } from './UserSignin'
-
-
+import { handleUpdateProfile, handleSignup } from "../hooks/updateAuthentication"
+import LoginSnackbar from "./LoginSnackbar"
+import { useRouter } from "next/router"
 
 const UserSignup = () => {
   const auth = getAuth()
-  const router = useRouter()
+  const router = useRouter();
+
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [checkPassword, setCheckPassword] = useState("")
@@ -18,21 +16,12 @@ const UserSignup = () => {
   const handleSubmit = async (auth, e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (password==checkPassword) {
-      await createUserWithEmailAndPassword(auth, email, password).then(() => {
-        handleUpdateProfile(auth, {displayName:"ななし"})
-        router.push("/")
-      }
-      ).catch(
-        () => {alert( '不正なメールアドレスです。' )}
-      )
+      handleSignup(auth, router, email, password)
     } else {
       alert( 'パスワードが一致しません。' )
     }
+  }
 
-  }
-  const handleClose = async () => {
-    await router.push("/")
-  }
   const handleChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.currentTarget.value)
   }
@@ -45,24 +34,13 @@ const UserSignup = () => {
 
   return (
       <div style={{textAlign:"center"}}>
-        <Snackbar
-          open={auth?.currentUser?.email!="sample@example.com"}
-          anchorOrigin={{ vertical: "top", horizontal: "center" }}
-          autoHideDuration={3000}
-          key={"top" + "center"}
-          onClose={handleClose}
-        >
-          <Alert onClose={handleClose} severity="warning">
-            すでにログインしています
-          </Alert>
-        </Snackbar>
-        <div style={{fontWeight: "bold"}}>新規アカウントの作成</div>
+        <LoginSnackbar />
         <form onSubmit={(e) => {handleSubmit(auth, e)}}>
-        <input type="email" className="form-control" style={{width:'200px', margin: '5px auto'}} placeholder="メールアドレス" onChange={handleChangeEmail} required></input>
+          <div style={{fontWeight: "bold"}}>新規アカウントの作成</div>
+          <input type="email" className="form-control" style={{width:'200px', margin: '5px auto'}} placeholder="メールアドレス" onChange={handleChangeEmail} required></input>
           <input type="password" className="form-control" style={{width:'200px', margin: '5px auto'}} placeholder="パスワード" onChange={handleChangePassword} required></input>
           <input type="password" className="form-control" style={{width:'200px', margin: '5px auto'}} placeholder="パスワード（確認）" onChange={handleChangeCheckPassword} required></input>
           <button type="submit" className="btn" style={{width:'200px', marginTop:'5px', backgroundColor: '#EEEEEE'}}>新規作成</button>
-
           <div>
             <Link href={"/privacypolicy"}>
               <a style={{fontSize: '70%'}}>プライバシーポリシー</a>
