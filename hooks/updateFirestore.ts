@@ -20,7 +20,6 @@ export const updateDoc = async ( colname, updateDoc ): Promise<void> => {
     () => {}
   ).catch(
     (error) => {
-      console.log(error);
       alert( '文章が長すぎます。' );
     }
   )

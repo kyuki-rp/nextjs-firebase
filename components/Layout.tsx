@@ -9,7 +9,6 @@ const Layout = ({ children }) => {
     const description = ''
 
     const router = useRouter();
-    console.log(router)
     let content
 
     if (router.route=="/signin" || router.route=="/signup") {

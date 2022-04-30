@@ -54,14 +54,12 @@ export const handleSignout = (auth, router) => {
   
   export const handleUpdatePassword = (auth, password, newPassword, checkNewPassword) => {
     const credential = EmailAuthProvider.credential(auth.currentUser?.email ?? '', password)
-    console.log(credential)
   
     if (newPassword==checkNewPassword) {
       reauthenticateWithCredential(auth.currentUser, credential).then(() => {
         updatePassword(auth.currentUser, newPassword)
         alert( 'パスワードが更新されました。' );
       }).catch((error) => {
-        console.log(error)
         alert( 'パスワードが間違っています。' );
       });
     } else {

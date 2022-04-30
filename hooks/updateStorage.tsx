@@ -39,7 +39,6 @@ export const uploadFile = (colname ,element, storageColname, file) => {
           console.log(percent + "% done");
         },
         (error) => {
-          console.log("Error");
           alert( '容量が大きすぎます。' );
         },
         () => {

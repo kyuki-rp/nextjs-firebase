@@ -60,9 +60,7 @@ export default function Card( props ) {
           const percent = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
           console.log(percent + "% done");
         },
-        (error) => {
-          console.log("Error");
-        },
+        (error) => {},
         () => {
           updateFile(file)
         }
