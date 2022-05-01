@@ -11,9 +11,6 @@ const OtherSignin = () => {
       signInSuccessUrl: "/",
       signInOptions: [
           GoogleAuthProvider.PROVIDER_ID,
-          FacebookAuthProvider.PROVIDER_ID,
-          TwitterAuthProvider.PROVIDER_ID,
-          GithubAuthProvider.PROVIDER_ID
       ],
     }
 
